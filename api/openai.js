@@ -12,9 +12,12 @@ export default async function handler(req, res) {
     }
 
     try {
-        const response = await axios.post(`https://api.diioffc.web.id/api/ai/openai?query=${encodeURIComponent(query)}`);
-        res.status(200).json(response.data);
+        const apiUrl = `https://api.diioffc.web.id/api/ai/openai?query=${encodeURIComponent(query)}`;
+        const response = await axios.get(apiUrl);  // Changed from POST to GET
+
+        return res.status(200).json(response.data);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch data" });
+        console.error("API Error:", error.response?.data || error.message);
+        return res.status(500).json({ error: "Failed to fetch data" });
     }
 }
